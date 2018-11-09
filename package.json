@@ -2,7 +2,7 @@
   "name": "fullstack",
   "version": "0.1.0",
   "private": true,
-  "main": "server/server.js",
+  "main": "server/index.js",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "bcryptjs": "^2.4.3",

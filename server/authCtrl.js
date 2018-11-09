@@ -1,38 +1,28 @@
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
 module.exports = {
-  async signup(req, res) {
-    let { username, password } = req.body;
-    let db = req.app.get("db");
-    let foundUser = await db.find_user([username]);
-    if (foundUser[0])
-        return res.status(200).send({ message: "User Name already in use" });
-    let salt = bcrypt.genSaltSync(10);
-    let hash = bcrypt.hashSync(password, salt);
-    // destructuring array of username, hash
-    let [createdUser] = await db.create_customer([username, hash]);
-    req.session.user = {username: createdUser.username};
-    res.status(200).send({ message: "logged In" });
-  },
+    signup: (req, res) => {
+        const dbInstance = req.app.get("db");
+        const { username, password } = req.body;
 
-  async login(req, res) {
-    let { username, password } = req.body;
-    let db = req.app.get("db");
-    let [foundUser] = await db.find_user([username]);
-    if (foundUser) {
-        // compareSync returns either true or false
-        let result = bcrypt.compareSync(password, foundUser.password);
-        if (result) {
-        // if foundUser
-            req.session.user = {username: foundUser.username};
-            res.status(200).send({ message: "logged In" });
-        } else {
-            res.status(401).send({ message: "Unauthorized: password incorrect" });
-        }
-        } else {
-        res.status(401).send({ message: "User Name not found." });
-        }
+
+        console.log(username)
+        console.log(req.body)
+        dbInstance.createUser([username, password])
+            .then( response => {
+                res.status(200).send(response[0]);
+            })
+            .catch(err => res.status(404).send(err));
     },
+
+    login: (req, res) => {
+        let dbInstance = req.app.get("db");
+        let { username, password } = req.body;
+        dbInstance.verifyUser([username, password])
+            .then(response => {
+                res.status(200).send(response[0]);
+            })
+            .catch(err => res.status(404).send(err));    },
 
     userData(req, res) {
         if (req.session.user) {
@@ -45,5 +35,33 @@ module.exports = {
     logout(req, res) {
         req.session.destroy();
         res.redirect('http://localhost:3000')
+    },
+
+    getUserPosts: (req, res) => {
+        let dbInstance = req.app.get("db");
+        dbInstance.get_user_post();
+        let { search, userposts } = req.query;
+        let { id } = req.params;
+    },
+        
+    createUserPosts: (req, res) => {
+        let { id } = req.params;
+        let { title, img, content } = req.body;
+        id =+ id;
+        
+        let dbInstance = req.app.get('db');
+        dbInstance.createUserPosts([title, img, content, id]        .then(response => {
+            res.status(200).send(resonse);
+            }))
+    },
+        
+    getSinglePost: (req, res) => {
+        let { postid } = req.params;
+        postid =+ postid;
+        
+        let dbInstance = req.app.get('db');
+        dbInstance.getSinglePost([postid]).then(response => {
+        res.status(200).send(response);
+        })
     }
 };

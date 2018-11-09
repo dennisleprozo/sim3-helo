@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import '../../App.css';
 
-class Dashboard extends Component {
+ class Dashboard extends Component {
   constructor(){
     super();
 
@@ -13,11 +13,11 @@ class Dashboard extends Component {
       userposts: true
     }
   }
+ //lifecycle method fires when the dashboard first loads
   componentDidMount() {
     this.getAllPost();
-    console.log('this.getAllPost', this.getAllPost)
   }
-
+//method that sends the axios request to the endpoint
   getAllPost = async function(){
     let { id } = this.props;
     let { search, userposts } = this.state;
@@ -44,7 +44,7 @@ class Dashboard extends Component {
 
 
   render() {
-    let displayPosts = this.state.posts.map(post => {
+    let displayPosts = this.state.posts.map( post => {
       let {title, username, profile_pic } = post;
       return (
         <div>
@@ -57,7 +57,7 @@ class Dashboard extends Component {
     return (
       <div>
         Dashboard
-        <p>My Posts</p>
+          <p>My Posts</p>
         <input type="checkbox" value={this.state.posts}/>
         <p>Search here:</p>
         <input type="text" placeholder="Search" onChange={(e)=>{this.handleSearch(e.target.value)}} value = {this.state.search}/>

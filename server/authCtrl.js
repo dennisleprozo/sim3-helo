@@ -39,7 +39,7 @@ module.exports = {
 
     getUserPosts: (req, res) => {
         let dbInstance = req.app.get("db");
-        dbInstance.get_user_post();
+        dbInstance.join();
         let { search, userposts } = req.query;
         let { id } = req.params;
     },
@@ -56,11 +56,11 @@ module.exports = {
     },
         
     getSinglePost: (req, res) => {
-        let { postid } = req.params;
-        postid =+ postid;
+        let { id } = req.params;
+        id =+ id;
         
         let dbInstance = req.app.get('db');
-        dbInstance.getSinglePost([postid]).then(response => {
+        dbInstance.getSinglePost([id]).then(response => {
         res.status(200).send(response);
         })
     }

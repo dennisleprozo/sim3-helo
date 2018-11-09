@@ -29,7 +29,7 @@ app.post('/api/auth/login', authCtrl.login);
 
 app.get('/api/post/:id', authCtrl.getUserPosts);
 app.post('/api/posts/:id', authCtrl.createUserPosts);
-app.get('/api/posts/post/:postid', authCtrl.getSinglePost);
+app.get('/api/posts/post/:id', authCtrl.getSinglePost);
 
 
 

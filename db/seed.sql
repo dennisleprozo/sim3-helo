@@ -34,3 +34,7 @@ INSERT INTO posts
 (title, img, content, author_id)
 VALUES 
 ('LOTR', 'img1_url', 'the Hobbits', 1 );
+
+select helo_user.id, posts.author_id
+from helo_user
+join posts on posts.author_id = helo_user.id;

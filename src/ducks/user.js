@@ -1,5 +1,6 @@
 const initialState = { 
     user: {},
+    
     username: '',
     id: 0,
     profile_pic: ''

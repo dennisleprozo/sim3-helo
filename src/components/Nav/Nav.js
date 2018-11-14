@@ -23,7 +23,7 @@ function Nav() {
       </Link>
     </div>
   );
-  console.log('this.props.match', this.props.match);
+  // console.log('this.props.match', this.props.match);
 }
 
 //returns the nav state to reducer
@@ -32,5 +32,5 @@ function mapStateToProps(state) {
   return { username, profile_pic };
 }
 
-export default connect(mapStateToProps, null)(Nav);
-withRouter(Nav);
+export default connect(mapStateToProps, null)(withRouter(Nav));
+

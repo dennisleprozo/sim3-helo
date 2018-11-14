@@ -1,15 +1,14 @@
 require("dotenv").config();
-const express = require('express')
+const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const massive = require("massive");
-const authCtrl = require('./authCtrl')
-
+const authCtrl = require("./authCtrl");
 
 const app = express();
 // app.use(bodyParser.json());
-app.use(express.json())
-app.use(bodyParser.json())
+app.use(express.json());
+app.use(bodyParser.json());
 const { CONNECTION_STRING, SESSION_SECRET, SERVER_PORT } = process.env;
 
 massive(CONNECTION_STRING).then(db => app.set("db", db));
@@ -22,32 +21,16 @@ app.use(
   })
 );
 
-app.post('/api/auth/signup', authCtrl.signup)
-app.post('/api/auth/login', authCtrl.login);
+app.post("/auth/signup", authCtrl.signup);
+app.post("/auth/login", authCtrl.login);
 
+app.get("/api/post/:id", authCtrl.getUserPosts);
+app.post("/api/posts/:id", authCtrl.createUserPosts);
+app.get("/api/posts/post/:id", authCtrl.getSinglePost);
 
+app.get("/api/user-data", authCtrl.userData);
+app.get("/auth/logout", authCtrl.logout);
 
-app.get('/api/post/:id', authCtrl.getUserPosts);
-app.post('/api/posts/:id', authCtrl.createUserPosts);
-app.get('/api/posts/post/:id', authCtrl.getSinglePost);
-
-
-
-app.get('/api/user-data', authCtrl.userData);
-app.get('/auth/logout', authCtrl.logout);
-
-
-
-
-
-app.listen(SERVER_PORT, () => console.log(`Eavesdropping on SERVER_PORT: ${SERVER_PORT}`));
-
-
-
-
-
-
-
-
-
-
+app.listen(SERVER_PORT, () =>
+  console.log(`Eavesdropping on SERVER_PORT: ${SERVER_PORT}`)
+);

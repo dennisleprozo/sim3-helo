@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import logo from "./communityBank.svg";
 import "./Auth.css";
 import axios from "axios";
 
@@ -22,6 +21,20 @@ export default class Auth extends Component {
   // updateProfilePic(e) {
   //     this.setState({ profile_pic: e.target.value });
   // }
+  
+  async signup() {
+    if (!this.state.username || !this.state.password)
+      return alert("Please fill out username and password.");
+    let res = await axios.post("/auth/signup", {
+      username: this.state.username,
+      password: this.state.password
+    });
+    if (res.data.message === "logged In") {
+      this.props.history.push("/privates");
+    } else {
+      alert(res.data.message);
+    }
+  }
 
   async login() {
     if (!this.state.username || !this.state.password)
@@ -39,19 +52,6 @@ export default class Auth extends Component {
     }
   }
 
-  async signup() {
-    if (!this.state.username || !this.state.password)
-      return alert("Please fill out username and password.");
-    let res = await axios.post("/auth/signup", {
-      username: this.state.username,
-      password: this.state.password
-    });
-    if (res.data.message === "logged In") {
-      this.props.history.push("/privates");
-    } else {
-      alert(res.data.message);
-    }
-  }
 
   render() {
     return (
